@@ -1,0 +1,212 @@
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Reflection;
+using System.Threading;
+
+namespace DartSpelet
+{
+    public class Program
+    {
+        public static void Main()
+        {
+            CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+
+            Game newGame = new Game();
+            newGame.PlayGame();
+        }
+    }
+
+    internal class Game
+    {
+        public List<Player> listOfPlayers = new List<Player>();
+
+        public void PlayGame()
+        {
+            Console.WriteLine("Welcome to the awesome Dart Game");
+            Console.Write("Number of players: ");
+            int numberOfPlayers = int.Parse(Console.ReadLine());
+
+            int count = 1;
+
+            for (int i = 0; i < numberOfPlayers; i++)
+            {
+                Console.Write("Enter player " + count + " name: ");
+                string playerName = Console.ReadLine();
+                AddPlayer(playerName);
+                count++;
+            }
+
+            IntenseBuildUp();
+
+            foreach (var i in listOfPlayers)
+            {
+                Turns newTurn = new Turns();
+                Console.WriteLine("Player: " + i.Name);
+                newTurn.GetScore();
+            }
+        }
+
+        public void AddPlayer(string name)
+        {
+            Console.Clear();
+
+            Player newPlayer = new Player()
+            {
+                Name = name
+            };
+            listOfPlayers.Add(newPlayer);
+        }
+
+        public static void IntenseBuildUp()
+        {
+            Console.Clear();
+
+            Console.WriteLine("Get ready to play Darts!");
+            Thread.Sleep(1000);
+            Console.WriteLine("3");
+            Thread.Sleep(1000);
+            Console.WriteLine("2");
+            Thread.Sleep(1000);
+            Console.WriteLine("1");
+            Thread.Sleep(1000);
+            Console.WriteLine("GAME ON!");
+            Thread.Sleep(2000);
+            Console.Clear();
+        }
+    }
+
+    internal class Player
+    {
+        //Field
+        private string name;
+        public List<int> turns = new List<int>();
+
+        //konstruktor
+        public Player(string name = "")
+        {
+            Name = name;
+        }
+
+        //Propertyn where the user gets the information
+        public string Name
+        {
+            get { return name; }
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException("name is null");
+                }
+                name = value;
+            }
+        }
+
+        public static void CalculatePoints()
+        {
+            int sum = 0;
+
+            //foreach (var i in turns)
+            //{
+
+            //}
+
+            if (sum == 301 || sum > 301)
+            {
+                //playerX is winner
+            }
+            else
+            {
+                //continue the match
+            }
+        }
+
+        public int AddTurn(int firstThrow, int secondThrow, int thirdThrow)
+        {
+            int total = firstThrow + secondThrow + thirdThrow;
+            Console.WriteLine("Total Score: " + total);
+            turns.Add(total);
+            return total;
+        }
+    }
+
+    internal class Turns
+    {
+        private int firstThrow;
+        private int secondThrow;
+        private int thirdThrow;
+
+        public Turns (int firstThrow = 0, int secondThrow = 0, int thirdThrow = 0)
+        {
+            FirstThrow = firstThrow;
+            SecondThrow = secondThrow;
+            ThirdThrow = thirdThrow;
+        }
+
+        public int FirstThrow 
+        {
+            get { return firstThrow; }
+            set
+            {
+                if (value > 20 || value < 0)
+                {
+                    throw new Exception ("Score can not be less than 0 or more than 20");
+                }
+                else
+                {
+                    firstThrow = value;
+                }
+            }
+        }
+
+        public int SecondThrow
+        {
+            get { return secondThrow; }
+            set
+            {
+                if (value > 20 || value < 0)
+                {
+                    throw new Exception("Score can not be less than 0 or more than 20");
+                }
+                else
+                {
+                    secondThrow = value;
+                }
+            }
+        }
+
+        public int ThirdThrow
+        {
+            get { return thirdThrow; }
+            set
+            {
+                if (value > 20 || value < 0)
+                {
+                    throw new Exception("Score can not be less than 0 or more than 20");
+                }
+                else
+                {
+                    thirdThrow = value;
+                }
+            }
+        }
+
+        public int GetScore()
+        {
+            Console.WriteLine("Enter points for each throw");
+            Console.Write("First Throw: ");
+            FirstThrow = int.Parse(Console.ReadLine());
+            Console.Write("Second Throw: ");
+            SecondThrow = int.Parse(Console.ReadLine());
+            Console.Write("Third Throw: ");
+            ThirdThrow = int.Parse(Console.ReadLine());
+
+            Player playerTurn = new Player();
+            int sum = playerTurn.AddTurn(firstThrow, secondThrow, thirdThrow);
+
+            return sum;
+        }
+    }
+}
